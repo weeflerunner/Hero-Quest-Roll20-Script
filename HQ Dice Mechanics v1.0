@@ -9,9 +9,9 @@
 								// dice rolled will be on single line if "single" and on multiple lines if "multi"
 // !hq graphics on|off|s|m|l  //default:on and m
 								// shows dice rolled as graphic, small, medium, or large if "on" or as text if "off"
-// !hq #b #g #y #blk #p #r #w
+// !hq #h #m					// if h is first then the hero is attacking, if the m is first then the monster is attacking
 //
-// !hq w #b #g #y #blk #p #r #w  	// whisper not really working very well right now, please ignore this option for now
+// !hq w #h #m					  	// whisper not really working very well right now, please ignore this option for now
 									// will roll the dice and whisper them only to the GM, gm can't whisper dice rolls to other players
 									// due to the way the API currently works we can only send a whisper dice roll via text output, even if you have graphics rolling turned on
 //
