@@ -255,8 +255,8 @@ function processHeroQuestDiceScript(diceToRoll, who){
 					//sendChat("", "/w " + who + " " + defendDiceResults.diceTextLog);
 				}
 				else {
-					sendChat("", "Atack:"+attackDiceResults.diceTextLog);
-					sendChat("", "Ability:"+defendDiceResults.diceGraphicsLog);
+					sendChat("", "Atacker "+attackDiceResults.diceTextLog);
+					sendChat("", "Defender "+defendDiceResults.diceTextLog);
 				}
 			}
 		}
@@ -265,10 +265,12 @@ function processHeroQuestDiceScript(diceToRoll, who){
 	switch(attack) {
         case "h":
 			damage = attackDiceResults.skull - defendDiceResults.bShield;
+			if (damage < 0) damage = 0;
 			sendChat("", "Hero does " + damage + " damage");
 			break;
 		case "m":
 			damage = attackDiceResults.skull - defendDiceResults.wShield;
+			if (damage < 0) damage = 0;
 			sendChat("", "Monster does " + damage + " damage");
 			break;
     }
