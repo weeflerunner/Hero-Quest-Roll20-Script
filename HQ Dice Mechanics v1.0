@@ -3,6 +3,7 @@
 // copyright pug games 2014
 // please feel free to use this script, change it, add to it in any way you feel
 // Script created by Roll20 user Konrad J.
+// V1.1. additions by Paul G. 
 //
 // !hq log on|multi|single|off  // default:on and multi
 								// outputs dice rolled to the chat window if "on", only the result if "off"
@@ -10,6 +11,8 @@
 // !hq graphics on|off|s|m|l  //default:on and m
 								// shows dice rolled as graphic, small, medium, or large if "on" or as text if "off"
 // !hq #h #m					// if h is first then the hero is attacking, if the m is first then the monster is attacking
+//
+// !hq #t                       // roll a single die for traps (Paul G.)           
 //
 // !hq w #h #m					  	// whisper not really working very well right now, please ignore this option for now
 									// will roll the dice and whisper them only to the GM, gm can't whisper dice rolls to other players
@@ -19,8 +22,8 @@
 //
 
 var hqCONSTANTS = {
-	HQCOMMAND : "!hq",
-	GRAPHICSIZE : {
+	    HQCOMMAND : "!hq",
+	    GRAPHICSIZE : {
     	SMALL : 20,
 		MEDIUM : 30,
 		LARGE : 40
@@ -77,96 +80,137 @@ function rollHQDice(diceQty, type, who){
 	var s4 = '" width="';
 	var s5 = '"/>';
 	
-	if (type==="h") {
-		diceResult.diceTextLog = "Hero: ";
-	}
-	else{
-		diceResult.diceTextLog = "Monster: ";
-	}
+	switch(type){
+	    case "h":
+	        diceResult.diceTextLog = "Hero: "
+	        break;
+	    case "m":
+	        diceResult.diceTextLog = "Monster: ";
+	        break;
+	    case "t":
+	        diceResult.diceTextLog = "Trap: ";
+	        break;
+	}    
 	
 	if (hqGlobal.diceTestEnabled === true) {
 		diceQty = 6;
 	}
 	
-	for (i=1;i<=diceQty;i++) {
-
-	if (hqGlobal.diceTestEnabled === true) {
-		roll = roll + 1;
-	}
-	else {
-		roll = randomInteger(6);
-	}
-
-	if (type === "h") {
-	switch(roll) {
-        case 1:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(BShield)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.BSHIELD + s2 + "Black Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.bShield = diceResult.bShield + 1;
-			break;
-		case 2:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.wShield = diceResult.wShield + 1;
-			break;
-		case 3:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.wShield = diceResult.wShield + 1;
-			break;
-		case 4:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.skull = diceResult.skull + 1;
-			break;
-		case 5:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.skull = diceResult.skull + 1;
-			break;
-		case 6:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.skull = diceResult.skull + 1;
-			break;
+    for (i=1;i<=diceQty;i++) {
+    
+	    if (hqGlobal.diceTestEnabled === true) {
+		    roll = roll + 1;
+	    }
+	    else {
+		    roll = randomInteger(6);
+	    }
+    
+	    switch(type){
+	        case "h":
+    	        switch(roll) {
+            	    case 1:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(BShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.BSHIELD + s2 + "Black Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.bShield = diceResult.bShield + 1;
+    			    break;
+    		        case 2:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.wShield = diceResult.wShield + 1;
+    			    break;
+    		        case 3:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.wShield = diceResult.wShield + 1;
+    			    break;
+    		        case 4:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    		        case 5:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    		        case 6:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICEWHITE.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    	   		}
+            break;
+	        case "m":
+    		    switch(roll) {
+            	    case 1:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(BShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.BSHIELD + s2 + "Black Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.bShield = diceResult.bShield + 1;
+    			    break;
+    		        case 2:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.wShield = diceResult.wShield + 1;
+    			    break;
+    		        case 3:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.wShield = diceResult.wShield + 1;
+    			    break;
+    		        case 4:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    	        		diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    		        case 5:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    		        case 6:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+            	}
+            break;
+	        case "t":
+	            switch(roll) {
+            	    case 1:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(BShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.BSHIELD + s2 + "Black Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.bShield = diceResult.bShield + 1;
+    			    break;
+    		        case 2:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.wShield = diceResult.wShield + 1;
+    			    break;
+    		        case 3:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.wShield = diceResult.wShield + 1;
+    			    break;
+    		        case 4:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    		        case 5:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+    		        case 6:
+    			        diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
+    			        diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
+    			        diceResult.skull = diceResult.skull + 1;
+    			    break;
+            	}
+	        break;
+	    }
     }
-	}
-	else {
-	switch(roll) {
-        case 1:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(BShield)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.BSHIELD + s2 + "Black Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.bShield = diceResult.bShield + 1;
-			break;
-		case 2:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.wShield = diceResult.wShield + 1;
-			break;
-		case 3:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(WShield)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.WSHIELD + s2 + "White Shield" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.wShield = diceResult.wShield + 1;
-			break;
-		case 4:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.skull = diceResult.skull + 1;
-			break;
-		case 5:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.skull = diceResult.skull + 1;
-			break;
-		case 6:
-			diceResult.diceTextLog = diceResult.diceTextLog + "(Skull)";
-			diceResult.diceGraphicsLog = diceResult.diceGraphicsLog + s1 + hqCONSTANTS.HQDICERED.SKULL + s2 + "Skull" + s3 + hqGlobal.diceGraphicsChatSize + s4 + hqGlobal.diceGraphicsChatSize + s5;
-			diceResult.skull = diceResult.skull + 1;
-			break;
-    }
-	}
-	}
-	return diceResult;
+    return diceResult;
 }
 
 function processHeroQuestDiceScript(diceToRoll, who){
@@ -209,10 +253,12 @@ function processHeroQuestDiceScript(diceToRoll, who){
 	attack = diceToRoll[0].substring(0,1);
 	diceQty = diceToRoll[0].substring(1);
 	attackDiceResults = rollHQDice(diceQty, attack, who);
-
-	defend = diceToRoll[1].substring(0,1);
-	diceQty = diceToRoll[1].substring(1);
-	defendDiceResults = rollHQDice(diceQty, defend, who);
+    
+    if (diceToRoll.length > 1){
+	    defend = diceToRoll[1].substring(0,1);
+	    diceQty = diceToRoll[1].substring(1);
+	    defendDiceResults = rollHQDice(diceQty, defend, who);
+    }
 
 	if (hqGlobal.diceTestEnabled === true) {
 		sendChat("", "/desc " + who + ": h1 m1");
@@ -261,18 +307,23 @@ function processHeroQuestDiceScript(diceToRoll, who){
 			}
 		}
 	}
-
+    
 	switch(attack) {
         case "h":
-			damage = attackDiceResults.skull - defendDiceResults.bShield;
-			if (damage < 0) damage = 0;
-			sendChat("", "Hero does " + damage + " damage");
-			break;
+		    damage = attackDiceResults.skull - defendDiceResults.bShield;
+		    if (damage < 0) damage = 0;
+		    sendChat("", "Hero does " + damage + " damage");
+		break;
 		case "m":
 			damage = attackDiceResults.skull - defendDiceResults.wShield;
 			if (damage < 0) damage = 0;
 			sendChat("", "Monster does " + damage + " damage");
-			break;
+		break;
+		case "t":
+			damage = attackDiceResults.skull
+			if (damage < 0) damage = 0;
+			sendChat("", "Trap does " + damage + " damage");
+		break;
     }
 }
 
@@ -290,44 +341,44 @@ var processScriptTabs = function(argv, who) {
 					switch(argv[1]) {
 						case "on":
 							hqGlobal.diceLogChat = true;
-							break;
+						break;
 						case "off":
 							hqGlobal.diceLogChat = false;
-							break;
+						break;
 						case "multi":
 							hqGlobal.diceLogRolledOnOneLine = false;
-							break;
+						break;
 						case "single":
 							hqGlobal.diceLogRolledOnOneLine = true;
-							break;
-
+						break;
+    
 					}
-					break;
+				break;
 				case "w":
 					hqGlobal.diceLogChatWhisper = true;
 					argv.shift();
 					processHeroQuestDiceScript(argv, who);
 					hqGlobal.diceLogChatWhisper = false;
-					break;
+				break;
 				case "graphics":
 					switch(argv[1]) {
 						case "on":
 							hqGlobal.diceGraphicsChat = true;
-							break;
+						break;
 						case "off":
 							hqGlobal.diceGraphicsChat = false;
-							break;
+						break;
 						case "s":
 							hqGlobal.diceGraphicsChatSize = hqCONSTANTS.GRAPHICSIZE.SMALL;
-							break;
+						break;
 						case "m":
 							hqGlobal.diceGraphicsChatSize = hqCONSTANTS.GRAPHICSIZE.MEDIUM;
-							break;
+						break;
 						case "l":
 							hqGlobal.diceGraphicsChatSize = hqCONSTANTS.GRAPHICSIZE.LARGE;
-							break;
+						break;
 					}
-					break;
+				break;
 				case "test":
 					hqGlobal.diceTestEnabled = true;
 					tmpLogChat = hqGlobal.diceLogChat;
@@ -338,12 +389,12 @@ var processScriptTabs = function(argv, who) {
 					hqGlobal.diceTestEnabled = false;
 					hqGlobal.diceLogChat = tmpLogChat;
 					hqGlobal.diceGraphicsChat = tmpGraphicsChat;
-					break;
+				break;
 				default:
 					processHeroQuestDiceScript(argv, who);
 					hqGlobal.diceLogChatWhisper = false;
 			}
-			break;
+		break;
     }
 };
 
